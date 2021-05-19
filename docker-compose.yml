@@ -1,0 +1,38 @@
+version: "3.8"
+
+networks: 
+    clientsapi-dev:
+        driver: bridge
+
+services:
+    clientsapi:
+        image: clientsapi:latest
+        depends_on: 
+            - "postgres-image"
+        build: 
+            context: .
+            dockerfile: Dockerfile
+        ports: 
+            - "8000:80"
+        environment: 
+            DB_CONNECTION_STRING: "host=postgres-image;port=5432;database=clients;username=clientsapi;password=clientsapi"
+        networks: 
+            - "clientsapi-dev"
+    
+    postgres-image:
+        image: postgres:latest
+        ports:
+            - "5432"
+        restart: "always"
+        volumes: 
+            - db_volume:/var/lib/postgresql/data
+#            - ./Database/seed.sql :/docker-entrypoint-initdb.d/seed.sql
+        environment: 
+            POSTGRES_USER: "clientsapi"
+            POSTGRES_PASSWORD: "clientsapi"
+            POSTGRES_DB: "clients"
+        networks:
+            - "clientsapi-dev"
+volumes:
+    db_volume:
+    
