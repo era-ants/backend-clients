@@ -52,8 +52,7 @@ namespace Clients.Services
                         default,
                         default,
                         default
-                    )),
-                    _clients));
+                    ))));
 
                 _clients.Add(newClient);
                 await File.WriteAllTextAsync("clients_data.json", JsonSerializer.Serialize(_clients));

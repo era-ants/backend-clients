@@ -1,20 +1,15 @@
 using System;
 using System.IO;
-using Clients.DataAccess;
 using Clients.DatabaseMigrations;
-using Clients.Model;
 using Clients.Services;
 using FluentMigrator.Runner;
-using LinqToDB;
-using LinqToDB.AspNet;
-using LinqToDB.AspNet.Logging;
-using LinqToDB.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Npgsql;
 
 namespace Clients
 {
@@ -42,28 +37,23 @@ namespace Clients
             var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
             if (string.IsNullOrEmpty(connectionString))
                 throw new InvalidOperationException("DB_CONNECTION_STRING environment variable is not set");
-            services
-                .AddLinqToDbContext<AppDataConnection>((provider, builder) =>
-                {
-                    builder
-                        .UsePostgreSQL(connectionString)
-                        .UseDefaultLogging(provider);
-                })
-                ;
+            services.AddScoped(_ => new NpgsqlConnection(connectionString));
 
             services
                 .AddFluentMigratorCore()
                 .ConfigureRunner(builder => builder
-                    .AddPostgres()
+                    .AddPostgres11_0()
                     .WithGlobalConnectionString(connectionString)
-                    .ScanIn(typeof(InitialMigration).Assembly).For.Migrations())
+                    .WithMigrationsIn(typeof(InitialMigration).Assembly)
+                    // .ScanIn(typeof(InitialMigration).Assembly).For.Migrations()
+                )
                 .AddLogging(builder => builder.AddFluentMigratorConsole())
                 .BuildServiceProvider()
                 ;
 
             services
-                .AddScoped<IClientsService, DbClientsService>()
-                .AddScoped<IStatisticsService, DbClientsService>()
+                .AddScoped<IClientsService, PostgresDbClientsService>()
+                .AddScoped<IStatisticsService, PostgresDbClientsService>()
                 ;
         }
 

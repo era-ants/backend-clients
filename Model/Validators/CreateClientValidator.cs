@@ -22,9 +22,6 @@ namespace Clients.Model.Validators
             RuleFor(x => x.PassportData)
                 .NotEmpty()
                 .WithMessage("Client's passport data must be specified");
-            RuleFor(x => x.RegisteredClients)
-                .NotNull()
-                .WithMessage("Registered clients must be provided");
         }
     }
 }

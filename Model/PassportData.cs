@@ -15,18 +15,22 @@ namespace Clients.Model
         /// </summary>
         [JsonConstructor]
         public PassportData(
+            Guid guid,
             short series,
             int number,
             DateTimeOffset dateOfIssue,
             string departmentName,
             string departmentCode)
         {
+            Guid = guid;
             Series = series;
             Number = number;
             DateOfIssue = dateOfIssue;
             DepartmentName = departmentName;
             DepartmentCode = departmentCode;
         }
+        
+        public Guid Guid { get; }
 
         /// <summary>
         /// Серия паспорта
@@ -63,6 +67,7 @@ namespace Clients.Model
             if (createPassportData == null)
                 throw new ArgumentNullException(nameof(createPassportData));
             return new PassportData(
+                Guid.NewGuid(), 
                 createPassportData.Series,
                 createPassportData.Number,
                 createPassportData.DateOfIssue,

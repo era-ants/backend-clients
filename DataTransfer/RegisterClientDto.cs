@@ -51,5 +51,30 @@ namespace Clients.DataTransfer
         /// Подтип клиента. 1 - Без льгот, 2 - Пожилой, 3 - Инвалид, 4 - Ветеран
         /// </summary>
         public int ClientSubtypeId { get; set; }
+        
+        /// <summary>
+        /// Серия паспорта клиента
+        /// </summary>
+        public short PassportSeries { get; set; }
+        
+        /// <summary>
+        /// Номер паспорта клиента
+        /// </summary>
+        public int PassportNumber { get; set; }
+        
+        /// <summary>
+        /// Дата выдачи паспорта клиенту
+        /// </summary>
+        public DateTimeOffset PassportDateOfIssue { get; set; }
+        
+        /// <summary>
+        /// Наименование органа, выдавшего паспорт 
+        /// </summary>
+        public string PassportDepartmentName { get; set; }
+        
+        /// <summary>
+        /// Код подразделения, выдавшего паспорт
+        /// </summary>
+        public string PassportDepartmentCode { get; set; }
     }
 }

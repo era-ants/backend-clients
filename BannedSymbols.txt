@@ -1,3 +1,3 @@
 M:Clients.Model.Client.#ctor(System.Guid,Clients.Model.FullName,Clients.Model.ClientType,Clients.Model.ClientSubtype,Clients.Model.Card,Clients.Model.PassportData)
 M:Clients.Model.Card.#ctor(System.Guid,System.DateTimeOffset,System.DateTimeOffset)
-M:Clients.Model.PassportData.#ctor(System.Int16,System.Int32,System.DateTimeOffset,System.String,System.String)
+M:Clients.Model.PassportData.#ctor(System.Guid,System.Int16,System.Int32,System.DateTimeOffset,System.String,System.String)

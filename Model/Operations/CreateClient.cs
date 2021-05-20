@@ -13,15 +13,13 @@ namespace Clients.Model.Operations
             ClientType clientType,
             ClientSubtype clientSubtype,
             Card card,
-            PassportData passportData,
-            IEnumerable<Client> registeredClients)
+            PassportData passportData)
         {
             FullName = fullName;
             ClientType = clientType;
             ClientSubtype = clientSubtype;
             Card = card;
             PassportData = passportData;
-            RegisteredClients = registeredClients;
             new CreateClientValidator().ValidateAndThrow(this);
         }
 
@@ -30,6 +28,5 @@ namespace Clients.Model.Operations
         public ClientSubtype ClientSubtype { get; }
         public Card Card { get; }
         public PassportData PassportData { get; }
-        public IEnumerable<Client> RegisteredClients { get; }
     }
 }
