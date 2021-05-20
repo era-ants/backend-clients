@@ -1,0 +1,327 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Clients API",
+    "version": "v0.1"
+  },
+  "paths": {
+    "/Clients": {
+      "get": {
+        "tags": [
+          "Clients"
+        ],
+        "summary": "Возвращает полные данные по всем клиентам системы",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FullClientDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FullClientDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FullClientDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Clients"
+        ],
+        "summary": "Регистрирует нового клиента в системе",
+        "requestBody": {
+          "description": "Данные для регистрации",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterClientDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterClientDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterClientDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterClientSuccessResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterClientSuccessResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterClientSuccessResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Clients/{clientGuid}": {
+      "get": {
+        "tags": [
+          "Clients"
+        ],
+        "summary": "Возвращает полные данные по выбранному клиенту системы",
+        "parameters": [
+          {
+            "name": "clientGuid",
+            "in": "path",
+            "description": "Guid клиента",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FullClientDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FullClientDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FullClientDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Statistics": {
+      "get": {
+        "tags": [
+          "Statistics"
+        ],
+        "summary": "Возвращает статистические данные по зарегистрированным в системе клиентам",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatisticsDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatisticsDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatisticsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ErrorResult": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FullClientDto": {
+        "type": "object",
+        "properties": {
+          "guid": {
+            "type": "string",
+            "description": "Guid клиента",
+            "format": "uuid"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Имя",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Фамилия",
+            "nullable": true
+          },
+          "parentName": {
+            "type": "string",
+            "description": "Отчество",
+            "nullable": true
+          },
+          "hasParentName": {
+            "type": "boolean",
+            "description": "true, если у клиента есть отчество"
+          },
+          "cardGuid": {
+            "type": "string",
+            "description": "Уникальный идентификатор карты",
+            "format": "uuid"
+          },
+          "cardValidFrom": {
+            "type": "string",
+            "description": "Дата начала срока действия карты клиента",
+            "format": "date-time"
+          },
+          "cardValidUntil": {
+            "type": "string",
+            "description": "Дата окончания срока действия карты клиента",
+            "format": "date-time"
+          },
+          "clientTypeId": {
+            "type": "integer",
+            "description": "Тип клиента. 1 - Гость, 2 - Житель",
+            "format": "int32"
+          },
+          "clientSubtypeId": {
+            "type": "integer",
+            "description": "Подтип клиента. 1 - Без льгот, 2 - Пожилой, 3 - Инвалид, 4 - Ветеран",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RegisterClientDto": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "Имя",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Фамилия",
+            "nullable": true
+          },
+          "parentName": {
+            "type": "string",
+            "description": "Отчество",
+            "nullable": true
+          },
+          "hasParentName": {
+            "type": "boolean",
+            "description": "true, если у клиента есть отчество"
+          },
+          "cardGuid": {
+            "type": "string",
+            "description": "Уникальный идентификатор карты клиента",
+            "format": "uuid"
+          },
+          "cardValidFrom": {
+            "type": "string",
+            "description": "Дата начала срока действия карты",
+            "format": "date-time"
+          },
+          "cardValidUntil": {
+            "type": "string",
+            "description": "Дата окончания срока действия карты",
+            "format": "date-time"
+          },
+          "clientTypeId": {
+            "type": "integer",
+            "description": "Тип клиента. 1 - Гость, 2 - Житель",
+            "format": "int32"
+          },
+          "clientSubtypeId": {
+            "type": "integer",
+            "description": "Подтип клиента. 1 - Без льгот, 2 - Пожилой, 3 - Инвалид, 4 - Ветеран",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Данные для регистрации клиента в системе"
+      },
+      "RegisterClientSuccess": {
+        "type": "object",
+        "properties": {
+          "clientGuid": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RegisterClientSuccessResult": {
+        "type": "object",
+        "properties": {
+          "isSuccess": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "okResult": {
+            "$ref": "#/components/schemas/RegisterClientSuccess"
+          },
+          "errorResult": {
+            "$ref": "#/components/schemas/ErrorResult"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StatisticsDto": {
+        "type": "object",
+        "properties": {
+          "clientsCount": {
+            "type": "integer",
+            "description": "Количество зарегистрированных клиентов",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
