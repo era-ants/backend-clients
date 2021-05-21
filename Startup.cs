@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Clients.DatabaseMigrations;
+using Clients.Hubs;
 using Clients.Services;
 using FluentMigrator.Runner;
 using Microsoft.AspNetCore.Builder;
@@ -27,6 +28,7 @@ namespace Clients
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSignalR();
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc(_version, new OpenApiInfo {Title = "Clients API", Version = _version});
@@ -71,12 +73,17 @@ namespace Clients
             app.UseHttpsRedirection();
         
             app.UseRouting();
+            app.UseWebSockets(new WebSocketOptions{KeepAliveInterval = TimeSpan.FromMinutes(5)});
 
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<ClientsHub>("/clientshub");
+            });
 
             using var scope = app.ApplicationServices.CreateScope();
             UpdateDatabase(app.ApplicationServices);

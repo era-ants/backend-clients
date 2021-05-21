@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using System.Threading.Tasks;
 using Clients.DataTransfer;
+using Clients.Hubs;
 using Clients.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Clients.Controllers
@@ -15,14 +19,17 @@ namespace Clients.Controllers
     public sealed class ClientsController : ControllerBase
     {
         private readonly IClientsService _clientsService;
+        private readonly IHubContext<ClientsHub, IClientsHubClient> _clientsHub;
         private readonly ILogger<ClientsController> _logger;
 
         public ClientsController(
             ILogger<ClientsController> logger,
-            IClientsService clientsService)
+            IClientsService clientsService,
+            IHubContext<ClientsHub, IClientsHubClient> clientsHub)
         {
             _logger = logger;
             _clientsService = clientsService;
+            _clientsHub = clientsHub;
         }
 
         /// <summary>
@@ -55,9 +62,10 @@ namespace Clients.Controllers
         public async Task<ActionResult<RegisterClientSuccess>> Post([Required] RegisterClientDto registerClientDto)
         {
             var result = await _clientsService.RegisterClient(registerClientDto);
-            if (result.IsSuccess)
-                return Ok(result.OkResult);
-            return BadRequest(result.ErrorResult);
+            if (!result.IsSuccess) return BadRequest(result.ErrorResult);
+            // TODO: сделать это пост-действием
+            await _clientsHub.Clients.All.RecieveNewClientGuid(result.OkResult.ClientGuid);
+            return Ok(result.OkResult);
         }
     }
 }
