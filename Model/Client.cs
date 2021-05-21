@@ -73,8 +73,8 @@ namespace Clients.Model
                 createClient.FullName,
                 createClient.ClientType,
                 createClient.ClientSubtype,
-                createClient.Card,
-                createClient.PassportData);
+                Card.New(createClient.Card),
+                PassportData.New(createClient.PassportData));
         }
     }
 }

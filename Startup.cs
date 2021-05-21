@@ -42,9 +42,9 @@ namespace Clients
             services
                 .AddFluentMigratorCore()
                 .ConfigureRunner(builder => builder
-                    .AddPostgres11_0()
-                    .WithGlobalConnectionString(connectionString)
-                    .WithMigrationsIn(typeof(InitialMigration).Assembly)
+                        .AddPostgres11_0()
+                        .WithGlobalConnectionString(connectionString)
+                        .WithMigrationsIn(typeof(InitialMigration).Assembly)
                     // .ScanIn(typeof(InitialMigration).Assembly).For.Migrations()
                 )
                 .AddLogging(builder => builder.AddFluentMigratorConsole())

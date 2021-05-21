@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Clients.Model.Validators;
 using FluentValidation;
 
@@ -6,7 +7,7 @@ namespace Clients.Model.Operations
 {
     public sealed class CreatePassportData
     {
-        public CreatePassportData(
+        private CreatePassportData(
             short series,
             int number,
             DateTimeOffset dateOfIssue,
@@ -18,7 +19,6 @@ namespace Clients.Model.Operations
             DateOfIssue = dateOfIssue;
             DepartmentName = departmentName;
             DepartmentCode = departmentCode;
-            new CreatePassportDataValidator().ValidateAndThrow(this);
         }
 
         /// <summary>
@@ -45,5 +45,29 @@ namespace Clients.Model.Operations
         /// Код подразделения
         /// </summary>
         public string DepartmentCode { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="series"></param>
+        /// <param name="number"></param>
+        /// <param name="dateOfIssue"></param>
+        /// <param name="departmentName"></param>
+        /// <param name="departmentCode"></param>
+        /// <param name="isPassportWithSeriesAndNumberRegistered"></param>
+        /// <exception cref="ValidationException"></exception>
+        public static async Task<CreatePassportData> NewAsync(
+            short series,
+            int number,
+            DateTimeOffset dateOfIssue,
+            string departmentName,
+            string departmentCode,
+            Func<short, int, Task<bool>> isPassportWithSeriesAndNumberRegistered)
+        {
+            var createPassportData = new CreatePassportData(series, number, dateOfIssue, departmentName, departmentCode);
+            await new CreatePassportDataValidator(isPassportWithSeriesAndNumberRegistered)
+                .ValidateAndThrowAsync(createPassportData);
+            return createPassportData;
+        }
     }
 }

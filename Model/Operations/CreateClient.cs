@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using Clients.Model.Validators;
 using FluentValidation;
 
@@ -9,24 +9,45 @@ namespace Clients.Model.Operations
         /// <summary>
         /// </summary>
         /// <exception cref="ValidationException"></exception>
-        public CreateClient(FullName fullName,
+        private CreateClient(FullName fullName,
             ClientType clientType,
             ClientSubtype clientSubtype,
-            Card card,
-            PassportData passportData)
+            CreateCard newCard,
+            CreatePassportData newPassportData)
         {
             FullName = fullName;
             ClientType = clientType;
             ClientSubtype = clientSubtype;
-            Card = card;
-            PassportData = passportData;
+            Card = newCard;
+            PassportData = newPassportData;
             new CreateClientValidator().ValidateAndThrow(this);
         }
 
         public FullName FullName { get; }
         public ClientType ClientType { get; }
         public ClientSubtype ClientSubtype { get; }
-        public Card Card { get; }
-        public PassportData PassportData { get; }
+        public CreateCard Card { get; }
+        public CreatePassportData PassportData { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fullName"></param>
+        /// <param name="clientType"></param>
+        /// <param name="clientSubtype"></param>
+        /// <param name="newCard"></param>
+        /// <param name="newPassportData"></param>
+        /// <exception cref="ValidationException"></exception>
+        public static async Task<CreateClient> NewAsync(
+            FullName fullName,
+            ClientType clientType,
+            ClientSubtype clientSubtype,
+            CreateCard newCard,
+            CreatePassportData newPassportData)
+        {
+            var createClient = new CreateClient(fullName, clientType, clientSubtype, newCard, newPassportData);
+            await new CreateClientValidator().ValidateAndThrowAsync(createClient);
+            return createClient;
+        }
     }
 }

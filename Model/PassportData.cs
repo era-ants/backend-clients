@@ -29,7 +29,7 @@ namespace Clients.Model
             DepartmentName = departmentName;
             DepartmentCode = departmentCode;
         }
-        
+
         public Guid Guid { get; }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Clients.Model
             if (createPassportData == null)
                 throw new ArgumentNullException(nameof(createPassportData));
             return new PassportData(
-                Guid.NewGuid(), 
+                Guid.NewGuid(),
                 createPassportData.Series,
                 createPassportData.Number,
                 createPassportData.DateOfIssue,

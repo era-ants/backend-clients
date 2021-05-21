@@ -1,4 +1,3 @@
-using Clients.Model;
 using FluentMigrator;
 using FluentMigrator.Postgres;
 

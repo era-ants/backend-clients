@@ -38,9 +38,15 @@ namespace Clients.Model
         /// </summary>
         public static ClientSubtype Veteran { get; } = new(4, "Ветеран");
 
-        public static IEnumerable<ClientSubtype> GetAll() => new[] {Regular, Senior, Disabled, Veteran};
+        public static IEnumerable<ClientSubtype> GetAll()
+        {
+            return new[] {Regular, Senior, Disabled, Veteran};
+        }
 
-        public static ClientSubtype GetById(int id) => GetAll().First(x => x.Id == id);
+        public static ClientSubtype GetById(int id)
+        {
+            return GetAll().First(x => x.Id == id);
+        }
 
         private bool Equals(ClientSubtype other) => Id == other.Id;
 

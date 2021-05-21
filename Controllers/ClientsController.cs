@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Clients.DataTransfer;
 using Clients.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -35,14 +36,28 @@ namespace Clients.Controllers
         /// </summary>
         /// <param name="clientGuid">Guid клиента</param>
         [HttpGet("{clientGuid:guid}")]
-        public Task<FullClientDto> Get([Required] Guid clientGuid) => _clientsService.GetFullClientInfo(clientGuid);
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<FullClientDto>> Get([Required] Guid clientGuid)
+        {
+            var clientInfo = await _clientsService.GetFullClientInfoOrDefault(clientGuid);
+            if (clientInfo == default) return NotFound();
+            return Ok(clientInfo);
+        }
 
         /// <summary>
         /// Регистрирует нового клиента в системе
         /// </summary>
         /// <param name="registerClientDto">Данные для регистрации</param>
         [HttpPost]
-        public Task<Result<RegisterClientSuccess>> Post([Required] RegisterClientDto registerClientDto) =>
-            _clientsService.RegisterClient(registerClientDto);
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<RegisterClientSuccess>> Post([Required] RegisterClientDto registerClientDto)
+        {
+            var result = await _clientsService.RegisterClient(registerClientDto);
+            if (result.IsSuccess)
+                return Ok(result.OkResult);
+            return BadRequest(result.ErrorResult);
+        }
     }
 }

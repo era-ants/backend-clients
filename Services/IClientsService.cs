@@ -9,7 +9,12 @@ namespace Clients.Services
     {
         Task<IEnumerable<FullClientDto>> GetFullClientsInfo();
 
-        Task<FullClientDto> GetFullClientInfo(Guid clientGuid);
+        /// <summary>
+        /// Возвращает полную информацию по выбранному клиенту системы.
+        /// Если клиента с указанным Guid не существует, возвращает null.
+        /// </summary>
+        /// <param name="clientGuid"></param>
+        Task<FullClientDto?> GetFullClientInfoOrDefault(Guid clientGuid);
 
         Task<Result<RegisterClientSuccess>> RegisterClient(RegisterClientDto registerClientDto);
     }

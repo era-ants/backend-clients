@@ -66,7 +66,7 @@ namespace Clients.DataTransfer
                 CardGuid = client.Card.Guid,
                 CardValidFrom = client.Card.ValidFrom,
                 CardValidUntil = client.Card.ValidUntil,
-                ClientTypeId = client.ClientType.Id,
+                ClientTypeId = client.ClientType.Id
             };
     }
 }
