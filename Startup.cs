@@ -72,11 +72,7 @@ namespace Clients
 
             app.UseRouting();
 
-            app.UseCors(x => x
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .SetIsOriginAllowed(_ => true)
-                .AllowCredentials());
+            app.UseCors(x => x.AllowAnyOrigin());
 
             app.UseAuthorization();
 
