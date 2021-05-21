@@ -19,13 +19,13 @@ namespace Clients.Controllers
     public sealed class ClientsController : ControllerBase
     {
         private readonly IClientsService _clientsService;
-        private readonly IHubContext<ClientsHub, IClientsHubClient> _clientsHub;
+        private readonly IHubContext<ClientsHub> _clientsHub;
         private readonly ILogger<ClientsController> _logger;
 
         public ClientsController(
             ILogger<ClientsController> logger,
             IClientsService clientsService,
-            IHubContext<ClientsHub, IClientsHubClient> clientsHub)
+            IHubContext<ClientsHub> clientsHub)
         {
             _logger = logger;
             _clientsService = clientsService;
@@ -64,7 +64,7 @@ namespace Clients.Controllers
             var result = await _clientsService.RegisterClient(registerClientDto);
             if (!result.IsSuccess) return BadRequest(result.ErrorResult);
             // TODO: сделать это пост-действием
-            await _clientsHub.Clients.All.RecieveNewClientGuid(result.OkResult.ClientGuid);
+            await _clientsHub.Clients.All.SendAsync("Notify", $"New user has been added! Guid: {result.OkResult.ClientGuid}");
             return Ok(result.OkResult);
         }
     }
