@@ -108,7 +108,7 @@ INSERT INTO ""Client"" (""Guid"", ""FirstName"", ""LastName"", ""ParentName"", "
                         registerCitizenDto.LastName,
                         registerCitizenDto.ParentName,
                         registerCitizenDto.HasParentName),
-                    ClientType.Guest, 
+                    ClientType.Citizen, 
                     ClientSubtype.GetById(registerCitizenDto.ClientSubtypeId),
                     await CreateCard.NewAsync(
                         registerCitizenDto.CardGuid,
