@@ -12,7 +12,6 @@ namespace Clients.Model.Validators
            ValidateClientType();
            ValidateClientSubtype();
            ValidateFullName();
-           ValidatePassportData();
         }
 
         private void ValidateCard() => RuleFor(x => x.Card)
@@ -34,11 +33,6 @@ namespace Clients.Model.Validators
         private void ValidateFullName() => RuleFor(x => x.FullName)
             .NotEmpty()
             .WithMessage("Client's full name must be specified")
-        ;
-
-        private void ValidatePassportData() => RuleFor(x => x.PassportData)
-            .NotEmpty()
-            .WithMessage("Client's passport data must be specified")
         ;
     }
 }

@@ -17,15 +17,13 @@ namespace Clients.Model
             FullName fullName,
             ClientType clientType,
             ClientSubtype clientSubtype,
-            Card card,
-            PassportData passportData)
+            Card card)
         {
             Guid = guid;
             FullName = fullName;
             ClientType = clientType;
             Card = card;
             ClientSubtype = clientSubtype;
-            PassportData = passportData;
         }
 
         /// <summary>
@@ -53,12 +51,6 @@ namespace Clients.Model
         /// </summary>
         public Card Card { get; }
 
-        // TODO: обязательно ли туристам предоставлять нам паспортные данные для оформления карты?
-        /// <summary>
-        /// Паспортные данные клиента
-        /// </summary>
-        public PassportData PassportData { get; }
-
         /// <summary>
         /// Создаёт нового клиента для регистрации в системе
         /// </summary>
@@ -73,8 +65,7 @@ namespace Clients.Model
                 createClient.FullName,
                 createClient.ClientType,
                 createClient.ClientSubtype,
-                Card.New(createClient.Card),
-                PassportData.New(createClient.PassportData));
+                Card.New(createClient.Card));
         }
     }
 }

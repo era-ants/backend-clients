@@ -5,11 +5,6 @@ using Microsoft.Extensions.Logging;
 
 namespace Clients.Hubs
 {
-    // public interface IClientsHubClient
-    // {
-    //     Task RecieveNewClientGuid(Guid newClientGuid);
-    // }
-    
     public sealed class ClientsHub : Hub
     {
         private readonly ILogger _logger;
@@ -21,7 +16,6 @@ namespace Clients.Hubs
 
         public void Send(string user, string message)
         {
-            // Call the broadcastMessage method to update clients.
             Clients.All.SendAsync("ReceiveMessage", user, message);
         }
 
@@ -36,7 +30,5 @@ namespace Clients.Hubs
             _logger.LogInformation($"Someone has disconnected! ConnectionId: {Context.ConnectionId}");
             await base.OnDisconnectedAsync(exception);
         }
-
-        // public Task ReportAboutNewClient(Guid newClientGuid) => Clients.All.RecieveNewClientGuid(newClientGuid);
     }
 }

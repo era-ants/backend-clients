@@ -12,14 +12,12 @@ namespace Clients.Model.Operations
         private CreateClient(FullName fullName,
             ClientType clientType,
             ClientSubtype clientSubtype,
-            CreateCard newCard,
-            CreatePassportData newPassportData)
+            CreateCard newCard)
         {
             FullName = fullName;
             ClientType = clientType;
             ClientSubtype = clientSubtype;
             Card = newCard;
-            PassportData = newPassportData;
             new CreateClientValidator().ValidateAndThrow(this);
         }
 
@@ -27,7 +25,6 @@ namespace Clients.Model.Operations
         public ClientType ClientType { get; }
         public ClientSubtype ClientSubtype { get; }
         public CreateCard Card { get; }
-        public CreatePassportData PassportData { get; }
 
         /// <summary>
         /// 
@@ -42,10 +39,9 @@ namespace Clients.Model.Operations
             FullName fullName,
             ClientType clientType,
             ClientSubtype clientSubtype,
-            CreateCard newCard,
-            CreatePassportData newPassportData)
+            CreateCard newCard)
         {
-            var createClient = new CreateClient(fullName, clientType, clientSubtype, newCard, newPassportData);
+            var createClient = new CreateClient(fullName, clientType, clientSubtype, newCard);
             await new CreateClientValidator().ValidateAndThrowAsync(createClient);
             return createClient;
         }

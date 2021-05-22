@@ -52,15 +52,7 @@ WHERE ""Client"".""Guid"" = @ClientGuid", new {ClientGuid = clientGuid});
                         registerClientDto.CardValidFrom,
                         registerClientDto.CardValidUntil,
                         guid => _dataConnection.QueryFirstAsync<bool>(@"
-SELECT EXISTS(SELECT 1 FROM ""Client"" WHERE ""Guid"" = @Guid)", new {Guid = guid})),
-                    await CreatePassportData.NewAsync(
-                        registerClientDto.PassportSeries,
-                        registerClientDto.PassportNumber,
-                        registerClientDto.PassportDateOfIssue,
-                        registerClientDto.PassportDepartmentName,
-                        registerClientDto.PassportDepartmentCode,
-                        (series, number) => _dataConnection.QueryFirstAsync<bool>(@"
-SELECT EXISTS(SELECT 1 FROM ""PassportData"" WHERE ""Series"" = @Series AND ""Number"" = @Number)", new {Series = series, Number = number}))));
+SELECT EXISTS(SELECT 1 FROM ""Client"" WHERE ""Guid"" = @Guid)", new {Guid = guid}))));
             }
             catch (ValidationException validationException)
             {
@@ -73,10 +65,6 @@ SELECT EXISTS(SELECT 1 FROM ""PassportData"" WHERE ""Series"" = @Series AND ""Nu
 INSERT INTO ""Card"" (""Guid"", ""ValidFrom"", ""ValidUntil"") VALUES (@Guid, @ValidFrom, @ValidUntil)
 ", newClient.Card);
             await _dataConnection.ExecuteAsync(@"
-INSERT INTO ""PassportData"" (""Guid"", ""Series"", ""Number"", ""DateOfIssue"", ""DepartmentName"", ""DepartmentCode"")
-VALUES (@Guid, @Series, @Number, @DateOfIssue, @DepartmentName, @DepartmentCode)
-", newClient.PassportData);
-            await _dataConnection.ExecuteAsync(@"
 INSERT INTO ""Client"" (""Guid"", ""FirstName"", ""LastName"", ""ParentName"", ""HasParentName"", ""CardGuid"",
 ""PassportDataGuid"", ""ClientTypeId"", ""ClientSubtypeId"") VALUES (@Guid, @FirstName, @LastName, @ParentName, 
 @HasParentName, @CardGuid, @PassportDataGuid, @ClientTypeId, @ClientSubtypeId)
@@ -88,7 +76,6 @@ INSERT INTO ""Client"" (""Guid"", ""FirstName"", ""LastName"", ""ParentName"", "
                 newClient.FullName.ParentName,
                 newClient.FullName.HasParentName,
                 CardGuid = newClient.Card.Guid,
-                PassportDataGuid = newClient.PassportData.Guid,
                 ClientTypeId = newClient.ClientType.Id,
                 ClientSubtypeId = newClient.ClientSubtype.Id
             });
