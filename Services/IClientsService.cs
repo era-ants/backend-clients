@@ -14,8 +14,10 @@ namespace Clients.Services
         /// Если клиента с указанным Guid не существует, возвращает null.
         /// </summary>
         /// <param name="clientGuid"></param>
-        Task<FullClientDto?> GetFullClientInfoOrDefault(Guid clientGuid);
+        Task<FullClientDto?> GetFullClientInfoOrDefaultAsync(Guid clientGuid);
 
-        Task<Result<RegisterClientSuccess>> RegisterClient(RegisterClientDto registerClientDto);
+        Task<Result<RegisterClientSuccess>> RegisterGuest(RegisterGuestDto registerGuestDto);
+
+        Task<Result<RegisterClientSuccess>> RegisterCitizen(RegisterCitizenDto registerCitizenDto);
     }
 }

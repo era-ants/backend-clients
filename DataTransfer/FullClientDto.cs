@@ -54,6 +54,16 @@ namespace Clients.DataTransfer
         /// Подтип клиента. 1 - Без льгот, 2 - Пожилой, 3 - Инвалид, 4 - Ветеран
         /// </summary>
         public int ClientSubtypeId { get; set; }
+        
+        /// <summary>
+        /// Email клиента
+        /// </summary>
+        public string? Email { get; set; }
+        
+        /// <summary>
+        /// Телефонный номер клиента
+        /// </summary>
+        public string? PhoneNumber { get; set; }
 
         public static FullClientDto FromModel(Client client) =>
             new()
@@ -66,7 +76,9 @@ namespace Clients.DataTransfer
                 CardGuid = client.Card.Guid,
                 CardValidFrom = client.Card.ValidFrom,
                 CardValidUntil = client.Card.ValidUntil,
-                ClientTypeId = client.ClientType.Id
+                ClientTypeId = client.ClientType.Id,
+                Email = client.CitizenCredentials?.Email,
+                PhoneNumber = client.GuestCredentials?.PhoneNumber
             };
     }
 }

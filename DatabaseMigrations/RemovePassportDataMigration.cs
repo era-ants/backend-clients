@@ -1,3 +1,4 @@
+using System;
 using FluentMigrator;
 
 namespace Clients.DatabaseMigrations
@@ -14,7 +15,7 @@ namespace Clients.DatabaseMigrations
 
         public override void Down()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Clients.Model
             HasParentName = hasParentName;
 
             new FullNameValidator().ValidateAndThrow(this);
-            
+
             _fullName = HasParentName
                 ? $"{LastName} {FirstName} {ParentName}"
                 : $"{LastName} {FirstName}";

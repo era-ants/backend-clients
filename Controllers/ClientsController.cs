@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 using System.Threading.Tasks;
 using Clients.DataTransfer;
 using Clients.Hubs;
 using Clients.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
@@ -18,8 +16,8 @@ namespace Clients.Controllers
     [Route("[controller]")]
     public sealed class ClientsController : ControllerBase
     {
-        private readonly IClientsService _clientsService;
         private readonly IHubContext<ClientsHub> _clientsHub;
+        private readonly IClientsService _clientsService;
         private readonly ILogger<ClientsController> _logger;
 
         public ClientsController(
@@ -47,24 +45,42 @@ namespace Clients.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<FullClientDto>> Get([Required] Guid clientGuid)
         {
-            var clientInfo = await _clientsService.GetFullClientInfoOrDefault(clientGuid);
+            var clientInfo = await _clientsService.GetFullClientInfoOrDefaultAsync(clientGuid);
             if (clientInfo == default) return NotFound();
             return Ok(clientInfo);
         }
 
         /// <summary>
-        /// Регистрирует нового клиента в системе
+        /// Регистрирует нового гостя Новороссийска в системе
         /// </summary>
-        /// <param name="registerClientDto">Данные для регистрации</param>
-        [HttpPost]
+        /// <param name="registerCitizenDto">Данные для регистрации</param>
+        [HttpPost("RegisterGuest")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<RegisterClientSuccess>> Post([Required] RegisterClientDto registerClientDto)
+        public async Task<ActionResult<RegisterClientSuccess>> Post([Required] RegisterGuestDto registerCitizenDto)
         {
-            var result = await _clientsService.RegisterClient(registerClientDto);
+            var result = await _clientsService.RegisterGuest(registerCitizenDto);
             if (!result.IsSuccess) return BadRequest(result.ErrorResult);
-            // TODO: сделать это пост-действием
-            await _clientsHub.Clients.All.SendAsync("Notify", $"New user has been added! Guid: {result.OkResult.ClientGuid}");
+            // TODO: изменить порядок выполнения рассылки
+            await _clientsHub.Clients.All.SendAsync("Notify",
+                $"New user has been added! Guid: {result.OkResult.ClientGuid}");
+            return Ok(result.OkResult);
+        }
+        
+        /// <summary>
+        /// Регистрирует нового жителя Новороссийска в системе
+        /// </summary>
+        /// <param name="registerCitizenDto">Данные для регистрации</param>
+        [HttpPost("RegisterCitizen")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<RegisterClientSuccess>> Post([Required] RegisterCitizenDto registerCitizenDto)
+        {
+            var result = await _clientsService.RegisterCitizen(registerCitizenDto);
+            if (!result.IsSuccess) return BadRequest(result.ErrorResult);
+            // TODO: изменить порядок выполнения рассылки
+            await _clientsHub.Clients.All.SendAsync("Notify",
+                $"New user has been added! Guid: {result.OkResult.ClientGuid}");
             return Ok(result.OkResult);
         }
     }

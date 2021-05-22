@@ -2,10 +2,7 @@ using System;
 
 namespace Clients.DataTransfer
 {
-    /// <summary>
-    /// Данные для регистрации клиента в системе
-    /// </summary>
-    public sealed class RegisterClientDto
+    public sealed class RegisterCitizenDto
     {
         /// <summary>
         /// Имя
@@ -43,38 +40,18 @@ namespace Clients.DataTransfer
         public DateTimeOffset CardValidUntil { get; set; }
 
         /// <summary>
-        /// Тип клиента. 1 - Гость, 2 - Житель
-        /// </summary>
-        public int ClientTypeId { get; set; }
-
-        /// <summary>
         /// Подтип клиента. 1 - Без льгот, 2 - Пожилой, 3 - Инвалид, 4 - Ветеран
         /// </summary>
         public int ClientSubtypeId { get; set; }
 
         /// <summary>
-        /// Серия паспорта клиента
+        /// Email клиента для входа в ЕСИА (мок)
         /// </summary>
-        public short PassportSeries { get; set; }
-
+        public string Email { get; set; }
+        
         /// <summary>
-        /// Номер паспорта клиента
+        /// Пароль клиента для входа в ЕСИА (мок)
         /// </summary>
-        public int PassportNumber { get; set; }
-
-        /// <summary>
-        /// Дата выдачи паспорта клиенту
-        /// </summary>
-        public DateTimeOffset PassportDateOfIssue { get; set; }
-
-        /// <summary>
-        /// Наименование органа, выдавшего паспорт
-        /// </summary>
-        public string PassportDepartmentName { get; set; }
-
-        /// <summary>
-        /// Код подразделения, выдавшего паспорт
-        /// </summary>
-        public string PassportDepartmentCode { get; set; }
+        public string Password { get; set; }
     }
 }

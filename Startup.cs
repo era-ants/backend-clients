@@ -56,6 +56,7 @@ namespace Clients
             services
                 .AddScoped<IClientsService, PostgresDbClientsService>()
                 .AddScoped<IStatisticsService, PostgresDbClientsService>()
+                .AddScoped<IAuthService, PostgresDbAuthService>()
                 ;
         }
 
@@ -71,9 +72,9 @@ namespace Clients
             });
 
             app.UseHttpsRedirection();
-        
+
             app.UseRouting();
-            app.UseWebSockets(new WebSocketOptions{KeepAliveInterval = TimeSpan.FromMinutes(5)});
+            app.UseWebSockets(new WebSocketOptions {KeepAliveInterval = TimeSpan.FromMinutes(5)});
 
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
