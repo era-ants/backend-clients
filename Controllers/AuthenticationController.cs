@@ -29,6 +29,7 @@ namespace Clients.Controllers
         /// <param name="email">Email</param>
         /// <param name="password">Пароль</param>
         [HttpPost("Citizen")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<FullClientDto>> AuthenticateCitizenAsync(string email, string password)
         {
@@ -48,6 +49,7 @@ namespace Clients.Controllers
         /// <param name="phoneNumber">Номер телефона</param>
         /// <param name="password">Пароль</param>
         [HttpPost("Guest")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<FullClientDto>> AuthenticateGuestAsync(string phoneNumber, string password)
         {

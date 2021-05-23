@@ -5,6 +5,142 @@
     "version": "v0.1"
   },
   "paths": {
+    "/Authentication/Citizen": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Аутентифицирует жителя Новороссийска в системе по email и паролю",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "description": "Email",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "Пароль",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FullClientDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FullClientDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FullClientDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Authentication/Guest": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Аутентифицирует гостя Новороссийска в системе по номеру телефона и паролю",
+        "parameters": [
+          {
+            "name": "phoneNumber",
+            "in": "query",
+            "description": "Номер телефона",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "description": "Пароль",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FullClientDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FullClientDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FullClientDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/Clients": {
       "get": {
         "tags": [
@@ -37,55 +173,6 @@
                   "items": {
                     "$ref": "#/components/schemas/FullClientDto"
                   }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Clients"
-        ],
-        "summary": "Регистрирует нового клиента в системе",
-        "requestBody": {
-          "description": "Данные для регистрации",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterClientDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterClientDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterClientDto"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RegisterClientSuccessResult"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RegisterClientSuccessResult"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RegisterClientSuccessResult"
                 }
               }
             }
@@ -131,6 +218,168 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Clients/RegisterGuest": {
+      "post": {
+        "tags": [
+          "Clients"
+        ],
+        "summary": "Регистрирует нового гостя Новороссийска в системе",
+        "requestBody": {
+          "description": "Данные для регистрации",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterGuestDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterGuestDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterGuestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterClientSuccess"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterClientSuccess"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterClientSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Clients/RegisterCitizen": {
+      "post": {
+        "tags": [
+          "Clients"
+        ],
+        "summary": "Регистрирует нового жителя Новороссийска в системе",
+        "requestBody": {
+          "description": "Данные для регистрации",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterCitizenDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterCitizenDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterCitizenDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterClientSuccess"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterClientSuccess"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterClientSuccess"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
           }
         }
       }
@@ -168,16 +417,6 @@
   },
   "components": {
     "schemas": {
-      "ErrorResult": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "FullClientDto": {
         "type": "object",
         "properties": {
@@ -229,11 +468,48 @@
             "type": "integer",
             "description": "Подтип клиента. 1 - Без льгот, 2 - Пожилой, 3 - Инвалид, 4 - Ветеран",
             "format": "int32"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email клиента",
+            "nullable": true
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Телефонный номер клиента",
+            "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "RegisterClientDto": {
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
+      "RegisterCitizenDto": {
         "type": "object",
         "properties": {
           "firstName": {
@@ -270,19 +546,23 @@
             "description": "Дата окончания срока действия карты",
             "format": "date-time"
           },
-          "clientTypeId": {
-            "type": "integer",
-            "description": "Тип клиента. 1 - Гость, 2 - Житель",
-            "format": "int32"
-          },
           "clientSubtypeId": {
             "type": "integer",
             "description": "Подтип клиента. 1 - Без льгот, 2 - Пожилой, 3 - Инвалид, 4 - Ветеран",
             "format": "int32"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email клиента для входа в ЕСИА (мок)",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "description": "Пароль клиента для входа в ЕСИА (мок)",
+            "nullable": true
           }
         },
-        "additionalProperties": false,
-        "description": "Данные для регистрации клиента в системе"
+        "additionalProperties": false
       },
       "RegisterClientSuccess": {
         "type": "object",
@@ -295,18 +575,57 @@
         },
         "additionalProperties": false
       },
-      "RegisterClientSuccessResult": {
+      "RegisterGuestDto": {
         "type": "object",
         "properties": {
-          "isSuccess": {
+          "firstName": {
+            "type": "string",
+            "description": "Имя",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Фамилия",
+            "nullable": true
+          },
+          "parentName": {
+            "type": "string",
+            "description": "Отчество",
+            "nullable": true
+          },
+          "hasParentName": {
             "type": "boolean",
-            "readOnly": true
+            "description": "true, если у клиента есть отчество"
           },
-          "okResult": {
-            "$ref": "#/components/schemas/RegisterClientSuccess"
+          "cardGuid": {
+            "type": "string",
+            "description": "Уникальный идентификатор карты клиента",
+            "format": "uuid"
           },
-          "errorResult": {
-            "$ref": "#/components/schemas/ErrorResult"
+          "cardValidFrom": {
+            "type": "string",
+            "description": "Дата начала срока действия карты",
+            "format": "date-time"
+          },
+          "cardValidUntil": {
+            "type": "string",
+            "description": "Дата окончания срока действия карты",
+            "format": "date-time"
+          },
+          "clientSubtypeId": {
+            "type": "integer",
+            "description": "Подтип клиента. 1 - Без льгот, 2 - Пожилой, 3 - Инвалид, 4 - Ветеран",
+            "format": "int32"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Телефонный номер клиента",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "description": "Пароль клиента для входа в систему",
+            "nullable": true
           }
         },
         "additionalProperties": false

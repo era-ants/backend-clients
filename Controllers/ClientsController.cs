@@ -64,7 +64,7 @@ namespace Clients.Controllers
             // TODO: изменить порядок выполнения рассылки
             await _clientsHub.Clients.All.SendAsync("Notify",
                 $"New user has been added! Guid: {result.OkResult.ClientGuid}");
-            return Ok(result.OkResult);
+            return Created(string.Empty, result.OkResult);
         }
         
         /// <summary>
@@ -81,7 +81,7 @@ namespace Clients.Controllers
             // TODO: изменить порядок выполнения рассылки
             await _clientsHub.Clients.All.SendAsync("Notify",
                 $"New user has been added! Guid: {result.OkResult.ClientGuid}");
-            return Ok(result.OkResult);
+            return Created(string.Empty, result.OkResult);
         }
     }
 }
